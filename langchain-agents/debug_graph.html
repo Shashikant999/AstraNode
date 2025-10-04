@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Graph Generation</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <h1>Graph Debug Test</h1>
+    <svg id="testSvg" width="400" height="300" style="border: 1px solid #ccc;"></svg>
+    
+    <script>
+        // Test basic D3 functionality
+        console.log("D3 version:", d3.version);
+        
+        // Test SVG selection
+        const svg = d3.select("#testSvg");
+        console.log("SVG selection:", svg.node());
+        
+        // Test data
+        const testData = {
+            nodes: [
+                {id: "node1", name: "Test Node 1", size: 10, color: "#ff0000"},
+                {id: "node2", name: "Test Node 2", size: 8, color: "#00ff00"}
+            ],
+            links: [
+                {source: "node1", target: "node2"}
+            ]
+        };
+        
+        console.log("Test data:", testData);
+        
+        // Simple graph test
+        try {
+            svg.selectAll("circle")
+                .data(testData.nodes)
+                .enter()
+                .append("circle")
+                .attr("cx", (d, i) => 100 + i * 50)
+                .attr("cy", 100)
+                .attr("r", d => d.size)
+                .attr("fill", d => d.color);
+                
+            console.log("✅ Basic D3 graph test successful");
+        } catch (error) {
+            console.error("❌ Basic D3 test failed:", error);
+        }
+        
+        // Test fetch API to our server
+        async function testAPI() {
+            try {
+                const response = await fetch('/api/papers/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: 'test', limit: 2 })
+                });
+                const data = await response.json();
+                console.log("✅ API test successful:", data);
+            } catch (error) {
+                console.error("❌ API test failed:", error);
+            }
+        }
+        
+        testAPI();
+    </script>
+</body>
+</html>

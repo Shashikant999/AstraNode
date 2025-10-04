@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "langchain-agents/app/main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "langchain-agents/app/main.py"
+    },
+    {
+      "src": "/gemini/(.*)",
+      "dest": "langchain-agents/app/main.py"
+    },
+    {
+      "src": "/health",
+      "dest": "langchain-agents/app/main.py"
+    },
+    {
+      "src": "/new",
+      "dest": "langchain-agents/app/main.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "langchain-agents/app/main.py"
+    }
+  ],
+  "env": {
+    "GEMINI_API_KEY": "AIzaSyD7xl1A9WrZSJxLC9lLpVXSIopc94GFHT8",
+    "GOOGLE_API_KEY": "AIzaSyD7xl1A9WrZSJxLC9lLpVXSIopc94GFHT8"
+  }
+}

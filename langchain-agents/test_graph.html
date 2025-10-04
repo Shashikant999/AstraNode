@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graph Debug - Real Test</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        #testGraphSvg {
+            border: 2px solid #000;
+            background: #f9f9f9;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>GraphRAG Debug Test</h1>
+    <button onclick="loadAndDrawGraph()">Test Graph Generation</button>
+    <div id="log" style="margin: 20px 0; padding: 10px; background: #f0f0f0; max-height: 200px; overflow-y: auto;"></div>
+    <svg id="testGraphSvg" width="600" height="400"></svg>
+    
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        async function loadAndDrawGraph() {
+            log('🔄 Starting graph test...');
+            
+            try {
+                // Test API call
+                log('📡 Fetching test graph data...');
+                const response = await fetch('http://localhost:8000/api/test-graph');
+                const data = await response.json();
+                log(`✅ API data loaded: ${data.nodes.length} nodes, ${data.links.length} links`);
+                
+                // Test D3 graph drawing
+                log('🎨 Drawing graph with D3...');
+                drawTestGraph('testGraphSvg', data);
+                
+            } catch (error) {
+                log('❌ Error: ' + error.message);
+                console.error(error);
+            }
+        }
+        
+        function drawTestGraph(containerId, data) {
+            log(`🎯 Drawing graph for container: ${containerId}`);
+            
+            const svg = d3.select(`#${containerId}`);
+            log(`🔍 SVG selection found: ${svg.node() !== null}`);
+            
+            if (svg.empty()) {
+                log(`❌ SVG element #${containerId} not found!`);
+                return;
+            }
+            
+            const width = 600;
+            const height = 400;
+            
+            svg.selectAll("*").remove();
+            log(`✅ SVG cleared, creating graph with ${data.nodes.length} nodes and ${data.links.length} links`);
+            
+            // Create simulation
+            const simulation = d3.forceSimulation(data.nodes)
+                .force("link", d3.forceLink(data.links).id(d => d.id).distance(80))
+                .force("charge", d3.forceManyBody().strength(-300))
+                .force("center", d3.forceCenter(width / 2, height / 2));
+            
+            // Create links
+            const link = svg.append("g")
+                .selectAll("line")
+                .data(data.links)
+                .enter().append("line")
+                .attr("stroke", "#999")
+                .attr("stroke-opacity", 0.6)
+                .attr("stroke-width", 2);
+            
+            // Create nodes
+            const node = svg.append("g")
+                .selectAll("circle")
+                .data(data.nodes)
+                .enter().append("circle")
+                .attr("r", d => d.size)
+                .attr("fill", d => d.color)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 2);
+                
+            // Add labels
+            const labels = svg.append("g")
+                .selectAll("text")
+                .data(data.nodes)
+                .enter().append("text")
+                .text(d => d.name)
+                .attr("font-size", "10px")
+                .attr("text-anchor", "middle")
+                .attr("dy", "3px");
+            
+            // Update positions
+            simulation.on("tick", () => {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+                
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+                    
+                labels
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+            });
+            
+            log(`✅ Graph simulation started successfully!`);
+        }
+        
+        // Auto-load on page ready
+        document.addEventListener('DOMContentLoaded', function() {
+            log('📄 Page loaded, D3 version: ' + d3.version);
+        });
+    </script>
+</body>
+</html>

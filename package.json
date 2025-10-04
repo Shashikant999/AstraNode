@@ -1,0 +1,33 @@
+{
+  "name": "research-paper-knowledge-graph",
+  "version": "1.0.0",
+  "description": "Interactive knowledge graph for research papers with AI-powered connections",
+  "main": "server.js",
+  "scripts": {
+    "start": "./start_graphrag.sh",
+    "build": "echo 'Build complete - GraphRAG system ready for deployment'",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd langchain-agents && uvicorn app.main:app --reload --port 8000",
+    "client": "cd langchain-agents && python3 -m http.server 8080",
+    "install-client": "cd client && npm install",
+    "setup": "./setup.sh",
+    "demo": "./start_graphrag.sh"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "openai": "^4.20.0",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.3.1",
+    "natural": "^6.7.0",
+    "compromise": "^14.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["research", "knowledge-graph", "ai", "visualization"],
+  "author": "Your Name",
+  "license": "MIT"
+}
