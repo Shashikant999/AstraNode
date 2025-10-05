@@ -26,10 +26,14 @@ python3 setup.py
 
 ### 3. **Add Key & Launch** 🚀
 ```bash
-# Edit .env file: GEMINI_API_KEY=your_key_here
+# Edit .env file (never commit this file!): 
+GEMINI_API_KEY=your_key_here
+
 ./run.sh        # Mac/Linux  
 run.bat         # Windows
 ```
+
+> **🔒 SECURITY:** API keys are automatically excluded from Git via `.gitignore`
 
 **Done!** Open → http://localhost:8000 🌍
 

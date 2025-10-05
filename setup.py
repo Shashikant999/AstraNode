@@ -69,10 +69,19 @@ def setup_virtual_environment():
     return run_command(pip_cmd, "Installing Python dependencies")
 
 def check_env_file():
-    """Check for .env file and create template if needed"""
+    """Check for .env file and create from template if needed"""
     env_path = Path(".env")
+    env_example_path = Path(".env.example")
+    
     if not env_path.exists():
-        env_template = """# NASA Space Apps GraphRAG Configuration
+        if env_example_path.exists():
+            # Copy from .env.example
+            import shutil
+            shutil.copy(env_example_path, env_path)
+            print(f"{Colors.YELLOW}⚠️  Created .env from template{Colors.END}")
+        else:
+            # Create basic template
+            env_template = """# NASA Space Apps GraphRAG Configuration
 # ===========================================
 
 # Google Gemini API Key (Required)
@@ -88,15 +97,24 @@ HOST=0.0.0.0
 PORT=8000
 DEBUG=true
 """
-        with open(env_path, 'w') as f:
-            f.write(env_template)
+            with open(env_path, 'w') as f:
+                f.write(env_template)
+            print(f"{Colors.YELLOW}⚠️  Created .env template file{Colors.END}")
         
-        print(f"{Colors.YELLOW}⚠️  Created .env template file{Colors.END}")
+        print(f"{Colors.RED}🔒 SECURITY: .env file is excluded from Git for safety{Colors.END}")
         print(f"{Colors.YELLOW}   Please add your API keys to .env file{Colors.END}")
         return False
     else:
-        print(f"{Colors.GREEN}✅ .env file exists{Colors.END}")
-        return True
+        # Check if it contains real API key
+        with open(env_path, 'r') as f:
+            content = f.read()
+        
+        if "your_gemini_api_key_here" in content:
+            print(f"{Colors.YELLOW}⚠️  .env exists but needs API key configuration{Colors.END}")
+            return False
+        else:
+            print(f"{Colors.GREEN}✅ .env file configured{Colors.END}")
+            return True
 
 def create_run_script():
     """Create simple run script"""
