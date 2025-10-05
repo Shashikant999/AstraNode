@@ -513,55 +513,10 @@ async def root():
         
         <div class="container">
             <div class="header">
-                <h1>🧬 Knovera Research Intelligence</h1>
-                <p>Knowledge Graph + LLM Analysis of 607 Space Biology Papers</p>
-            </div>
-
-            <div class="cards">
-                <div class="card">
-                    <h3>🤖 AI Status</h3>
-                    <div class="status">
-                        <div class="status-dot online"></div>
-                        <span>Google Gemini 2.5 Flash - Online</span>
-                    </div>
-                    <div class="status">
-                        <div class="status-dot online"></div>
-                        <span>LangChain Integration - Active</span>
-                    </div>
-                    <div class="status">
-                        <div class="status-dot online"></div>
-                        <span>Knowledge Graph - 607 Papers Loaded</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>📚 Research Capabilities</h3>
-                    <ul style="list-style: none; line-height: 1.8;">
-                        <li>🔬 Microgravity Effects Analysis</li>
-                        <li>🧬 Cellular Biology in Space</li>
-                        <li>☢️ Space Radiation Research</li>
-                        <li>🚀 Long-duration Spaceflight Studies</li>
-                        <li>🧪 Experimental Design Insights</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h3>🛠️ Available Tools</h3>
-                    <ul style="list-style: none; line-height: 1.8;">
-                        <li>📖 Research Paper Analysis</li>
-                        <li>🔍 Concept Exploration</li>
-                        <li>🤝 Collaboration Discovery</li>
-                        <li>📊 Data Visualization</li>
-                        <li>🎯 Hypothesis Generation</li>
-                    </ul>
-                </div>
+                <h1>Research Intelligence</h1>
             </div>
 
             <div class="query-section">
-                <h2>🔍 Knovera Knowledge Exploration</h2>
-                <p style="margin-bottom: 2rem; color: #666;">
-                    Explore connections in our knowledge graph with AI-powered reasoning
-                </p>
 
                 <!-- Knovera Mode Selector -->
                 <div class="mode-toggle">
@@ -606,20 +561,16 @@ async def root():
 
                 <div class="examples">
                     <div class="example" onclick="setGraphQuery('microgravity cellular pathways')">
-                        <strong>🔬 Pathway Analysis</strong><br>
-                        Explore cellular pathway connections in microgravity
+                        microgravity cellular pathways
                     </div>
                     <div class="example" onclick="setGraphQuery('radiation DNA repair mechanisms')">
-                        <strong>🧬 Mechanism Discovery</strong><br>
-                        Find DNA repair mechanism relationships
+                        radiation DNA repair mechanisms
                     </div>
                     <div class="example" onclick="setGraphQuery('spaceflight gene expression networks')">
-                        <strong>🕸️ Network Analysis</strong><br>
-                        Map gene expression networks in space
+                        spaceflight gene expression networks
                     </div>
                     <div class="example" onclick="setGraphQuery('muscle atrophy protein interactions')">
-                        <strong>⚛️ Protein Networks</strong><br>
-                        Discover protein interaction patterns
+                        muscle atrophy protein interactions
                     </div>
                 </div>
 
@@ -632,10 +583,7 @@ async def root():
             </div>
 
             <div class="footer">
-                <p>Knovera System: Google Gemini 2.5 Flash • Real Paper Database • 607 PMC Space Biology Papers</p>
-                <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7;">
-                    🔬 Database-Driven Analysis • 📚 PMC Research Papers • 🧬 Space Biology Focus
-                </p>
+                <!-- Footer content removed -->
             </div>
         </div>
 
