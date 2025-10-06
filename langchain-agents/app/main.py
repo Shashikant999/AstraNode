@@ -24,14 +24,25 @@ paper_db_available = False
 
 # Try to import Gemini first (this is what we need for the test)
 try:
+    print("🔧 Debug - Attempting to import Gemini agent...")
     try:
         from .gemini_agent import create_gemini_agent, GeminiResearchAgent
-    except ImportError:
+        print("🔧 Debug - Relative import successful")
+    except ImportError as rel_err:
+        print(f"🔧 Debug - Relative import failed: {rel_err}")
         from gemini_agent import create_gemini_agent, GeminiResearchAgent
+        print("🔧 Debug - Direct import successful")
     gemini_available = True
     print("✅ Gemini API loaded successfully")
 except ImportError as e:
     print(f"⚠️  Gemini not available: {e}")
+    print(f"🔧 Debug - Full import error: {type(e).__name__}: {e}")
+    create_gemini_agent = None
+    GeminiResearchAgent = None
+except Exception as e:
+    print(f"⚠️  Unexpected error importing Gemini: {e}")
+    print(f"🔧 Debug - Full error: {type(e).__name__}: {e}")
+    gemini_available = False
     create_gemini_agent = None
     GeminiResearchAgent = None
 
