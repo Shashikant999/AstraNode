@@ -4668,18 +4668,40 @@ async def root():
 @app.get("/health")
 async def health_check():
     """API health check endpoint"""
+    # Test Gemini API initialization
+    gemini_status = "unavailable"
+    gemini_error = None
+    
+    if gemini_available and create_gemini_agent:
+        try:
+            test_agent = create_gemini_agent()
+            if hasattr(test_agent, 'api_working') and test_agent.api_working:
+                gemini_status = "working"
+            else:
+                gemini_status = "configured_but_not_working"
+                gemini_error = "API key validation failed"
+        except Exception as e:
+            gemini_status = "error"
+            gemini_error = str(e)
+    
     return {
         "status": "ok",
         "service": "Research Assistant Agents",
-        "langchain_available": create_agent is not None,
+        "environment": "production" if IS_PRODUCTION else "development",
         "gemini_available": gemini_available,
         "langchain_available": langchain_available,
         "available_agents": ["research_assistant", "concept_explorer", "collaboration_finder", "analysis_specialist"],
-        "tools_count": len(research_tools),
+        "tools_count": len(research_tools) if research_tools else 0,
         "api_providers": {
-            "gemini": gemini_available,
+            "gemini": gemini_status,
+            "gemini_error": gemini_error,
             "langchain": langchain_available,
             "google_api_configured": bool(os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY"))
+        },
+        "env_debug": {
+            "VERCEL": os.getenv("VERCEL"),
+            "GEMINI_API_KEY_present": bool(os.getenv("GEMINI_API_KEY")),
+            "GOOGLE_API_KEY_present": bool(os.getenv("GOOGLE_API_KEY"))
         }
     }
 
@@ -5380,10 +5402,19 @@ async def get_citation_summary():
 async def gemini_query(request: QueryRequest):
     """Query using Google Gemini API directly"""
     if not gemini_available:
-        raise HTTPException(status_code=503, detail="Gemini API not available")
+        raise HTTPException(status_code=503, detail="Gemini API not available - module not imported")
     
     try:
         agent = create_gemini_agent()
+        
+        # Check if agent was created successfully
+        if not agent:
+            raise HTTPException(status_code=503, detail="Failed to create Gemini agent")
+        
+        # Check if API is working
+        if hasattr(agent, 'api_working') and not agent.api_working:
+            raise HTTPException(status_code=503, detail="Gemini API key validation failed")
+        
         context = request.context or {"papers_count": 607, "connections": 500}
         result = agent.query_knowledge_graph(request.query, context)
         

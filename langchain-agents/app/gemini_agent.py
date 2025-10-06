@@ -12,8 +12,16 @@ class GeminiResearchAgent:
     
     def __init__(self, api_key: str = None):
         """Initialize with Gemini API"""
+        # Debug environment variables
+        gemini_key = os.getenv("GEMINI_API_KEY")
+        google_key = os.getenv("GOOGLE_API_KEY")
+        
+        print(f"🔧 Debug - GEMINI_API_KEY present: {'Yes' if gemini_key else 'No'}")
+        print(f"🔧 Debug - GOOGLE_API_KEY present: {'Yes' if google_key else 'No'}")
+        print(f"🔧 Debug - Provided API key: {'Yes' if api_key else 'No'}")
+        
         # Use provided API key, environment variable, or hardcoded key
-        self.api_key = api_key or os.getenv("GEMINI_API_KEY") or "AIzaSyCaonefFVlB5g3xpg9vipm0FTZJSDtcQEM"
+        self.api_key = api_key or gemini_key or google_key or "AIzaSyCaonefFVlB5g3xpg9vipm0FTZJSDtcQEM"
         
         if not self.api_key or self.api_key == "your_gemini_api_key_here" or self.api_key == "demo_mode":
             print("⚠️  No valid API key found - running in DEMO MODE")
@@ -25,9 +33,9 @@ class GeminiResearchAgent:
             import google.generativeai as genai
             genai.configure(api_key=self.api_key)
             
-            # Initialize Gemini 2.5 Pro model with thinking capabilities
+            # Initialize Gemini Pro model
             self.model = genai.GenerativeModel(
-                model_name="gemini-2.5-pro",
+                model_name="gemini-1.5-pro",
                 generation_config={
                     "temperature": 0.1,
                     "top_p": 0.95,
@@ -38,11 +46,13 @@ class GeminiResearchAgent:
             
             # Test the API key with a simple call
             try:
-                test_response = self.model.generate_content("Test")
-                print("🔥 Google Gemini 2.5 Flash initialized and tested successfully!")
+                test_response = self.model.generate_content("Hello")
+                print(f"✅ Google Gemini Pro initialized and tested successfully!")
                 self.api_working = True
             except Exception as e:
                 print(f"⚠️  Gemini API key validation failed: {e}")
+                print(f"🔧 API Key present: {'Yes' if self.api_key else 'No'}")
+                print(f"🔧 API Key length: {len(self.api_key) if self.api_key else 0}")
                 print("💡 Please get a valid API key from https://aistudio.google.com/app/apikey")
                 self.api_working = False
             
