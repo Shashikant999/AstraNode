@@ -30,8 +30,13 @@ class GeminiResearchAgent:
         
         # Import here to handle optional dependency
         try:
+            print("🔧 Debug - Importing google.generativeai...")
             import google.generativeai as genai
+            print("🔧 Debug - google.generativeai imported successfully")
+            
+            print(f"🔧 Debug - Configuring with API key: {self.api_key[:10]}...")
             genai.configure(api_key=self.api_key)
+            print("🔧 Debug - API key configured successfully")
             
             # Initialize Gemini Pro model
             self.model = genai.GenerativeModel(

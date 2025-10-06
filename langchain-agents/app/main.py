@@ -22,6 +22,19 @@ langchain_available = False
 gemini_available = False
 paper_db_available = False
 
+# Test google-generativeai import first
+print("🔧 Debug - Testing google-generativeai import...")
+try:
+    import google.generativeai as genai_test
+    print("✅ google-generativeai package imported successfully")
+    genai_package_available = True
+except ImportError as e:
+    print(f"❌ google-generativeai package not available: {e}")
+    genai_package_available = False
+except Exception as e:
+    print(f"❌ Unexpected error importing google-generativeai: {e}")
+    genai_package_available = False
+
 # Try to import Gemini first (this is what we need for the test)
 try:
     print("🔧 Debug - Attempting to import Gemini agent...")
@@ -37,6 +50,7 @@ try:
 except ImportError as e:
     print(f"⚠️  Gemini not available: {e}")
     print(f"🔧 Debug - Full import error: {type(e).__name__}: {e}")
+    gemini_available = False
     create_gemini_agent = None
     GeminiResearchAgent = None
 except Exception as e:
