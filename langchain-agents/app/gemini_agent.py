@@ -13,7 +13,7 @@ class GeminiResearchAgent:
     def __init__(self, api_key: str = None):
         """Initialize with Gemini API"""
         # Use provided API key, environment variable, or hardcoded key
-        self.api_key = api_key or os.getenv("GEMINI_API_KEY") or "AIzaSyAPumVRgUEiER8HX4wpT6_k5eHLlW_QQ8Q"
+        self.api_key = api_key or os.getenv("GEMINI_API_KEY") or "AIzaSyCaonefFVlB5g3xpg9vipm0FTZJSDtcQEM"
         
         if not self.api_key or self.api_key == "your_gemini_api_key_here" or self.api_key == "demo_mode":
             print("⚠️  No valid API key found - running in DEMO MODE")

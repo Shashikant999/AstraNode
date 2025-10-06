@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "langchain-agents/app/main.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
     }
   ],
   "routes": [
@@ -29,7 +32,7 @@
     }
   ],
   "env": {
-    "GEMINI_API_KEY": "AIzaSyD7xl1A9WrZSJxLC9lLpVXSIopc94GFHT8",
-    "GOOGLE_API_KEY": "AIzaSyD7xl1A9WrZSJxLC9lLpVXSIopc94GFHT8"
+    "GEMINI_API_KEY": "AIzaSyCaonefFVlB5g3xpg9vipm0FTZJSDtcQEM",
+    "GOOGLE_API_KEY": "AIzaSyCaonefFVlB5g3xpg9vipm0FTZJSDtcQEM"
   }
 }
